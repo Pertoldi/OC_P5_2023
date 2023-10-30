@@ -15,6 +15,7 @@ import { UserService } from 'src/app/services/user.service';
 import { Router } from '@angular/router';
 
 
+
 describe('MeComponent', () => {
   let component: MeComponent;
   let fixture: ComponentFixture<MeComponent>;
@@ -40,9 +41,9 @@ describe('MeComponent', () => {
 
   const mockUser = {
     id: 1,
-    email: 'jean@dupont.com',
-    lastName: 'Dupont',
-    firstName: 'Jean',
+    email: 'test@test.com',
+    lastName: 'testln',
+    firstName: 'testfn',
     admin: false,
     password: 'password123',
     createdAt: new Date(),
