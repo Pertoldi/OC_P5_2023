@@ -1,3 +1,16 @@
+/// <reference types="cypress" />
+
+// const session = {
+//   id: 1,
+//   name: 'Débutant',
+//   date: '2023-04-01T09:00:00Z',
+//   teacher_id: 1,
+//   description: 'Session de découverte',
+//   users: [3, 4],
+//   createdAt: '2023-03-20T12:34:56.789Z',
+//   updatedAt: '2023-03-20T12:34:56.789Z',
+// }
+
 describe('Session spec', () => {
   it('Create session successfull', () => {
     cy.intercept(
@@ -7,33 +20,33 @@ describe('Session spec', () => {
       },
       [
         {
-          id: 99,
-          lastName: 'Dupont',
-          firstName: 'Jean',
-          createdAt: '2023-09-23T12:00:00.789Z',
-          updatedAt: '2023-09-23T12:00:00.789Z',
+          id: 1,
+          lastName: 'DELAHAYE',
+          firstName: 'Margot',
+          createdAt: '2023-11-13 17:47:04',
+          updatedAt: '2023-11-13 17:47:04',
         },
         {
-          id: 100,
-          lastName: 'Jean',
-          firstName: 'Jean',
-          createdAt: '2023-09-23T12:00:00.789Z',
-          updatedAt: '2023-09-23T12:00:00.789Z',
+          id: 2,
+          lastName: 'THIERCELIN',
+          firstName: 'Hélène',
+          createdAt: '2023-10-23 16:43:34',
+          updatedAt: '2023-10-23 16:43:34',
         },
       ]
     ).as('teacher');
 
     cy.intercept('POST', '/api/session', {
-      body: {
+      body: [{
         id: 1,
         name: 'Débutant',
         date: '2023-04-01T09:00:00Z',
-        teacher_id: 1234,
-        description: 'Cette une session de découverte',
-        users: [5678, 9012],
+        teacher_id: 1,
+        description: 'Session de découverte',
+        users: [3, 4],
         createdAt: '2023-03-20T12:34:56.789Z',
         updatedAt: '2023-03-20T12:34:56.789Z',
-      },
+      }],
     });
 
     cy.intercept(
@@ -46,14 +59,29 @@ describe('Session spec', () => {
           id: 1,
           name: 'Débutant',
           date: '2023-04-01T09:00:00Z',
-          teacher_id: 1234,
-          description: 'Cette une session de découverte',
-          users: [5678, 9012],
+          teacher_id: 1,
+          description: 'Session de découverte',
+          users: [3, 4],
           createdAt: '2023-03-20T12:34:56.789Z',
           updatedAt: '2023-03-20T12:34:56.789Z',
         },
       ]
     ).as('session');
+
+    // On se connect en tant qu'admin
+    cy.visit('/login')
+    cy.intercept('POST', '/api/auth/login', {
+      body: {
+        id: 1,
+        username: 'userName',
+        firstName: 'firstName',
+        lastName: 'lastName',
+        admin: true
+      },
+    })
+    cy.get('input[formControlName=email]').type("yoga@studio.com")
+    cy.get('input[formControlName=password]').type(`${"test!1234"}{enter}{enter}`)
+    // Fin de la connection en tant qu'admin
 
     cy.get('button[routerLink="create"]').click();
 
@@ -62,7 +90,7 @@ describe('Session spec', () => {
     cy.get('input[formControlName=name]').type('Session de test');
     cy.get('input[formControlName=date]').type('2024-10-10');
     cy.get('mat-select').click();
-    cy.get('mat-option').contains('Jean Dupont').click();
+    cy.get('mat-option').contains('Margot DELAHAYE').click();
     cy.get('textarea[formControlName=description]').type(
       'Description de la session'
     );
@@ -78,18 +106,18 @@ describe('Session spec', () => {
       },
       [
         {
-          id: 99,
-          lastName: 'Dupont',
-          firstName: 'Jean',
-          createdAt: '2023-09-23T12:00:00.789Z',
-          updatedAt: '2023-09-23T12:00:00.789Z',
+          id: 1,
+          lastName: 'DELAHAYE',
+          firstName: 'Margot',
+          createdAt: '2023-11-13 17:47:04',
+          updatedAt: '2023-11-13 17:47:04',
         },
         {
-          id: 100,
-          lastName: 'Jean',
-          firstName: 'Jean',
-          createdAt: '2023-09-23T12:00:00.789Z',
-          updatedAt: '2023-09-23T12:00:00.789Z',
+          id: 2,
+          lastName: 'THIERCELIN',
+          firstName: 'Hélène',
+          createdAt: '2023-10-23 16:43:34',
+          updatedAt: '2023-10-23 16:43:34',
         },
       ]
     ).as('teacher');
@@ -104,9 +132,9 @@ describe('Session spec', () => {
         id: sessionId,
         name: 'Débutant',
         date: '2023-04-01T09:00:00Z',
-        teacher_id: 1234,
-        description: 'Cette une session de découverte',
-        users: [5678, 9012],
+        teacher_id: 1,
+        description: 'Session de découverte',
+        users: [3, 4],
         createdAt: '2023-03-20T12:34:56.789Z',
         updatedAt: '2023-03-20T12:34:56.789Z',
       }
@@ -122,23 +150,34 @@ describe('Session spec', () => {
           id: 1,
           name: 'Débutant',
           date: '2023-04-01T09:00:00Z',
-          teacher_id: 1234,
-          description: 'Cette une session de découverte',
-          users: [5678, 9012],
+          teacher_id: 1,
+          description: 'Session de découverte',
+          users: [3, 4],
           createdAt: '2023-03-20T12:34:56.789Z',
           updatedAt: '2023-03-20T12:34:56.789Z',
         },
       ]
     ).as('session');
 
-    cy.intercept('PUT', '/api/session/1', {});
+    // cy.intercept('PUT', '/api/session/1', {});
+
+    cy.intercept('PUT', '/api/session/1', {
+      id: 1,
+      name: 'Nom de la session',
+      date: '2023-04-01T09:00:00Z',
+      teacher_id: 1,
+      description: 'Session de découverte',
+      users: [3, 4],
+      createdAt: '2023-03-20T12:34:56.789Z',
+      updatedAt: '2023-03-20T12:34:56.789Z',
+    });
 
     cy.get('button.mat-raised-button').contains('Edit').click();
     cy.url().should('include', `/update/${sessionId}`);
     cy.get('input[formControlName=name]').clear().type('Nom de la session');
     cy.get('input[formControlName=date]').clear().type('2023-10-15');
     cy.get('mat-select').click();
-    cy.get('mat-option').contains('Jean Jean').click();
+    cy.get('mat-option').contains('Margot DELAHAYE').click();
     cy.get('textarea[formControlName=description]')
       .clear()
       .type('Description de la session');
@@ -147,16 +186,73 @@ describe('Session spec', () => {
   });
 
   it('Delete session successfull', () => {
-    const teacherId = 1;
-
-    cy.intercept('DELETE', '/api/session/1', {});
     cy.intercept(
       {
         method: 'GET',
         url: '/api/session',
       },
-      []
+      [
+        {
+          id: 1,
+          name: 'Débutant',
+          date: '2023-04-01T09:00:00Z',
+          teacher_id: 1,
+          description: 'Session de découverte',
+          users: [3, 4],
+          createdAt: '2023-03-20T12:34:56.789Z',
+          updatedAt: '2023-03-20T12:34:56.789Z',
+        },
+      ]
     ).as('session');
+
+    cy.intercept('DELETE', '/api/session/1');
+
+    const sessionId = 1;
+    const teacherId = 1;
+    cy.intercept(
+      {
+        method: 'GET',
+        url: `/api/session/${sessionId}`,
+      },
+      {
+        id: sessionId,
+        name: 'Débutant',
+        date: '2023-04-01T09:00:00Z',
+        teacher_id: 1,
+        description: 'Session de découverte',
+        users: [3, 4],
+        createdAt: '2023-03-20T12:34:56.789Z',
+        updatedAt: '2023-03-20T12:34:56.789Z',
+      }
+    ).as(`${sessionId}`);
+    cy.intercept({
+      method: 'GET',
+      url: `/api/teacher/${teacherId}`,
+    },
+      {
+        id: 1,
+        lastName: "DELAHAYE",
+        firstName: "Margot",
+        createdAt: "2023 - 10 - 23T16: 43: 34",
+        updatedAt: "2023 - 10 - 23T16: 43: 34"
+      }
+    )
+    // On se connect en tant qu'admin
+    cy.visit('/login')
+    cy.intercept('POST', '/api/auth/login', {
+      body: {
+        id: 1,
+        username: 'userName',
+        firstName: 'firstName',
+        lastName: 'lastName',
+        admin: true
+      },
+    })
+    cy.get('input[formControlName=email]').type("yoga@studio.com")
+    cy.get('input[formControlName=password]').type(`${"test!1234"}{enter}{enter}`)
+    // Fin de la connection en tant qu'admin
+
+    cy.get('button.mat-raised-button').contains('Detail').click();
 
     cy.get('button.mat-raised-button').contains('Delete').click();
     cy.url().should('include', '/sessions');
@@ -213,3 +309,4 @@ describe('Session spec', () => {
     cy.url().should('include', '/');
   });
 });
+
