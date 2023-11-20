@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 describe('register spec', () => {
-  it('', () => {
+  it('Register successfull', () => {
 
     cy.visit('/register');
     cy.url().should('include', '/register');
