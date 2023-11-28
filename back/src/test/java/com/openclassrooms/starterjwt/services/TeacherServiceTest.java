@@ -1,4 +1,4 @@
-package services;
+package com.openclassrooms.starterjwt.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
