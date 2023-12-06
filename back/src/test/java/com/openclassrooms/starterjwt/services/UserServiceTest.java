@@ -14,7 +14,6 @@ import org.mockito.MockitoAnnotations;
 
 import com.openclassrooms.starterjwt.models.User;
 import com.openclassrooms.starterjwt.repository.UserRepository;
-import com.openclassrooms.starterjwt.services.UserService;
 
 public class UserServiceTest {
 

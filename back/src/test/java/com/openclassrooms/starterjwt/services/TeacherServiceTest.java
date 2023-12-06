@@ -15,7 +15,6 @@ import org.mockito.MockitoAnnotations;
 
 import com.openclassrooms.starterjwt.models.Teacher;
 import com.openclassrooms.starterjwt.repository.TeacherRepository;
-import com.openclassrooms.starterjwt.services.TeacherService;
 
 public class TeacherServiceTest {
   @Mock
