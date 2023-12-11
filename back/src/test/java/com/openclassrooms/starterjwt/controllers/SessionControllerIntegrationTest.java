@@ -13,6 +13,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:rollback.sql")
@@ -20,6 +23,8 @@ public class SessionControllerIntegrationTest {
 
   @Autowired
   private MockMvc mockMvc;
+
+  ObjectMapper ObjMapper = new ObjectMapper();
 
   @Test
   public void testFindSessionById_SessionExists_ReturnsSessionDto() throws Exception {
@@ -57,13 +62,17 @@ public class SessionControllerIntegrationTest {
   @Test
   public void testCreateSession_ValidData_ReturnsSessionDto() throws Exception {
     // Create a JSON request body with valid session data
-    String requestBody = "{\"name\":\"Session Name\",\"description\":\"Description\",\"date\":\"2023-10-15\",\"teacher_id\":\"1\"}";
+    ObjectNode requestBody = ObjMapper.createObjectNode();
+    requestBody.put("name", "Session Name");
+    requestBody.put("description", "description");
+    requestBody.put("date", "2023-10-15");
+    requestBody.put("teacher_id", "1");
 
     // Perform an HTTP POST request to create a new session
     MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/session")
         .with(SecurityMockMvcRequestPostProcessors.user("yoga@studio.com"))
         .contentType(MediaType.APPLICATION_JSON)
-        .content(requestBody))
+        .content(ObjMapper.writeValueAsString(requestBody)))
         .andExpect(status().isOk()) // Expect a 200 (OK) response status
         .andReturn();
     assertThat(result.getResponse().getStatus()).isEqualTo(200);
@@ -73,13 +82,15 @@ public class SessionControllerIntegrationTest {
   @Test
   public void testCreateSession_InvalidData_ReturnsBadRequest() throws Exception {
     // Create a JSON request body with invalid session data
-    String requestBody = "{\"description\":\"Description\",\"date\":\"InvalidDate\"}";
+    ObjectNode requestBody = ObjMapper.createObjectNode();
+    requestBody.put("description", "description");
+    requestBody.put("date", "InvalidDate");
 
     // Perform an HTTP POST request to create a new session with invalid data
     MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/session")
         .with(SecurityMockMvcRequestPostProcessors.user("yoga@studio.com"))
         .contentType(MediaType.APPLICATION_JSON)
-        .content(requestBody))
+        .content(ObjMapper.writeValueAsString(requestBody)))
         .andExpect(status().isBadRequest()) // Expect a 400 (Bad Request) response status
         .andReturn();
     assertThat(result.getResponse().getStatus()).isEqualTo(400);
@@ -88,13 +99,17 @@ public class SessionControllerIntegrationTest {
   @Test
   public void testUpdateSession_ValidInput() throws Exception {
     // Create a JSON request body with valid session data for updating
-    String requestBody = "{\"name\":\"Updated Name\",\"description\":\"Updated Description\",\"date\":\"2023-10-16\",\"teacher_id\":\"1\"}";
+    ObjectNode requestBody = ObjMapper.createObjectNode();
+    requestBody.put("name", "Upddated Name");
+    requestBody.put("description", "Updated description");
+    requestBody.put("date", "2023-10-16");
+    requestBody.put("teacher_id", "1");
 
     // Perform an HTTP PUT request to update a session
     MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/api/session/1")
         .with(SecurityMockMvcRequestPostProcessors.user("yoga@studio.com"))
         .contentType(MediaType.APPLICATION_JSON)
-        .content(requestBody))
+        .content(ObjMapper.writeValueAsString(requestBody)))
         .andExpect(status().isOk())
         .andReturn();
     assertThat(result.getResponse().getStatus()).isEqualTo(200);
@@ -103,13 +118,16 @@ public class SessionControllerIntegrationTest {
   @Test
   public void testUpdateSession_InvalidInput_ReturnsBadRequest() throws Exception {
     // Create a JSON request body with invalid session data for updating
-    String requestBody = "{\"description\":\"Description\",\"date\":\"InvalidDate\"}";
+
+    ObjectNode requestBody = ObjMapper.createObjectNode();
+    requestBody.put("description", "description");
+    requestBody.put("date", "InvalidDate");
 
     // Perform an HTTP PUT request to update a session with invalid data
     MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/api/session/1")
         .with(SecurityMockMvcRequestPostProcessors.user("yoga@studio.com"))
         .contentType(MediaType.APPLICATION_JSON)
-        .content(requestBody))
+        .content(ObjMapper.writeValueAsString(requestBody)))
         .andExpect(status().isBadRequest())
         .andReturn();
     assertThat(result.getResponse().getStatus()).isEqualTo(400);

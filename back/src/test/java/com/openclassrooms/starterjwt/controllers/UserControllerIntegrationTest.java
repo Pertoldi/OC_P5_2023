@@ -26,7 +26,7 @@ public class UserControllerIntegrationTest {
   private ObjectMapper objectMapper;
 
   @Test
-  public void testFindById_UserFound_ReturnsUserDto() throws Exception {
+  public void testFindById_userFound_returnUserDto() throws Exception {
     // Perform a GET request to retrieve user details with ID 1
     MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/api/user/1")
         // Authenticate as a user with the email "yoga@studio.com"
@@ -43,7 +43,7 @@ public class UserControllerIntegrationTest {
   }
 
   @Test
-  public void testFindById_UserNotFound_ReturnsNotFound() throws Exception {
+  public void testFindById_userNotFound_returnNotFound() throws Exception {
     // Perform a GET request to retrieve user details with an invalid ID (e.g., ID
     // that doesn't exist)
     MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/api/user/999")
@@ -55,7 +55,7 @@ public class UserControllerIntegrationTest {
   }
 
   @Test
-  public void testFindById_InvalidId_ReturnsBadRequest() throws Exception {
+  public void testFindById_invalidId_returnBadRequest() throws Exception {
     // Perform a GET request with an invalid ID (non-numeric) in the path
     MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/api/user/invalidId")
         // Authenticate as a user with the email "yoga@studio.com"
@@ -66,7 +66,7 @@ public class UserControllerIntegrationTest {
   }
 
   @Test
-  public void testDeleteUserById() throws Exception {
+  public void testDeleteUserById_userFound_return200() throws Exception {
     // Perform an HTTP DELETE request to delete user with ID 2
     MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/2")
         // Authenticate as a user with the email "toto@todo.com"
@@ -78,7 +78,7 @@ public class UserControllerIntegrationTest {
   }
 
   @Test
-  public void testDeleteUserById_UserNotFound_ReturnsNotFound() throws Exception {
+  public void testDeleteUserById_userNotFound_returnNotFound() throws Exception {
     // Perform an HTTP DELETE request to delete a user with an ID that
     // does not exist (e.g., an invalid ID)
     MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/999")
@@ -90,7 +90,7 @@ public class UserControllerIntegrationTest {
   }
 
   @Test
-  public void testDeleteUserById_UnauthorizedUser_ReturnsUnauthorized() throws Exception {
+  public void testDeleteUserById_unauthorizedUser_returnUnauthorized() throws Exception {
     // Perform an HTTP DELETE request to delete a user (e.g., when the authenticated
     // user is not the owner of the user)
     MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/2")
@@ -102,7 +102,7 @@ public class UserControllerIntegrationTest {
   }
 
   @Test
-  public void testDeleteUserById_InvalidId_ReturnsBadRequest() throws Exception {
+  public void testDeleteUserById_invalidId_returnBadRequest() throws Exception {
     // Perform an HTTP DELETE request with an invalid ID (e.g., a non-numeric ID) in
     // the path
     MvcResult result = mockMvc.perform(MockMvcRequestBuilders.delete("/api/user/invalidId")
