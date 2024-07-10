@@ -1,15 +1,5 @@
 /// <reference types="cypress" />
 
-// const session = {
-//   id: 1,
-//   name: 'Débutant',
-//   date: '2023-04-01T09:00:00Z',
-//   teacher_id: 1,
-//   description: 'Session de découverte',
-//   users: [3, 4],
-//   createdAt: '2023-03-20T12:34:56.789Z',
-//   updatedAt: '2023-03-20T12:34:56.789Z',
-// }
 
 describe('Session spec', () => {
   it('Create session successfull', () => {
